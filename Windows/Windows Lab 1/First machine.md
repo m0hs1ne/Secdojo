@@ -1,7 +1,8 @@
 ## First machine
 
 We started by scanning the IP using `nmap`:
-nmap -A [IP]
+
+        nmap -A [IP]
 
 we got port 80 so we can try to access it using the browser,we found this result:
 
@@ -19,7 +20,8 @@ so i download the three of them, then i tried to search for this type of file.
 
 then i searched for how can i use them, i found that using the pypykatz tool, i can parse the secrets hidden in the LSASS process.
 after running:
-pypykatz lsa minidump lsasss.DMP
+        
+        pypykatz lsa minidump lsasss.DMP
 
 we got this result:
 
@@ -44,6 +46,7 @@ luid 161412
 
 as you see we got the NT hash, we can use it to log in as Administrator.
 using the famous impacket `psexec.py` module we managed to log in:
-psexec.py Administrator@[IP] -hashes <NTLM hash>
+        
+        psexec.py Administrator@[IP] -hashes <NTLM hash>
 we got our Administrator in.
 in Desktop of the Administrator we got our flag.
