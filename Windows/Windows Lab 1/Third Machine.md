@@ -20,9 +20,7 @@ we run the module and the password successfully changed to empty password
 ![](https://i.ibb.co/k6bVQSn/Screen-Shot-2022-12-29-at-11-50-01-AM.png)
 
 now we can use `secretsdump.py` and extract all the hashes in `SAM` database:
-  
-  secretsdump.py "SRV-DC1$@[IP]" -no-pass
-
+`secretsdump.py "SRV-DC1$@[IP]" -no-pass`
 ![](https://i.ibb.co/7WKFjqP/Screen-Shot-2022-12-29-at-12-00-46-PM.png)
 
 after we got the Administrator hash we can easily log in with `psexec.py`:
