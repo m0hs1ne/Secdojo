@@ -6,7 +6,7 @@ we started by scanning the IP using `nmap`:
 
 the result was:
 
-![](https://i.ibb.co/z53hRgD/Screen-Shot-2022-12-31-at-1-11-52-PM.png)
+![](srcs/nmap.png)
 
 using `enum4linux` and the credentials from description Username:`LAB\student` Pass:`hsxGs_72$` :
 
@@ -16,11 +16,11 @@ using `enum4linux` and the credentials from description Username:`LAB\student` P
 
 we got this result in enum of users:
 
-![](https://i.ibb.co/XJttXtd/Screen-Shot-2022-12-31-at-1-19-36-PM.png)
+![](srcs/users.png)
 
 as you see we got the password of `test_av` in the description of `test_av`, we can use it to log in as Administrator because `test_av` is a member of `Domain Admins` group.
 
-![](https://i.ibb.co/ysY2C82/Screen-Shot-2022-12-31-at-1-34-09-PM.png)
+![](srcs/users.png)
 
 as you see we have port 3389 open, so we can use `rdesktop` to connect to the machine.
 
@@ -28,10 +28,10 @@ as you see we have port 3389 open, so we can use `rdesktop` to connect to the ma
 
 after connecting we got a message that the password is expired, so we need to change it.
 
-![](https://i.ibb.co/tXvWQPt/Screen-Shot-2022-12-31-at-1-40-59-PM.png)
+![](srcs/pass.png)
 
 after successfully changing the password we got our user in.
 
-![](https://i.ibb.co/8x0ZZ9m/Screen-Shot-2022-12-31-at-1-43-55-PM.png)
+![](srcs/Desktop.png)
 
 in Desktop of the Administrator we got our flag.
