@@ -17,6 +17,7 @@
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 ```
 Port 21 filtered means that the port is being blocked by a firewall.
+###Exploiting
 Using `knock` we can allow connection to port 22. 
 ```knock works by requiring connection attempts to a series of predefined closed ports. With a simple port knocking method, when the correct sequence of port "knocks" (connection attempts) is received, the firewall opens certain port(s) to allow a connection.```
 after that, we can use firewall-bypass script in nmap.
